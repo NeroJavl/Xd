@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Referencias Gallery - Video Downloader App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-item {
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .carousel-item img {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      padding: 0 10px;
+    }
+
+    .carousel-control {
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <button class="back-button" onclick="window.location.href='index.html'">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M20,11H7.83l5.59-5.59L12,4l-8,8l8,8l1.41-1.41L7.83,13H20V11z" fill="currentColor"/>
+      </svg>
+      Volver
+    </button>
+    
+    <div class="carousel">
+      <div class="carousel-inner" id="carouselInner">
+        <div class="carousel-item">
+          <img src="/e0ffffbc89ea1d7cdfaa59fd388c00a3.jpg" alt="Sunset Portrait">
+        </div>
+        <div class="carousel-item">
+          <img src="/4862f0d8614141e64595f09c507c1487.jpg" alt="Phone with Polaroids">
+        </div>
+        <div class="carousel-item">
+          <img src="/a7b4b79bd8c4c08ee5f666da04774115.jpg" alt="Backpacking Collage">
+        </div>
+        <div class="carousel-item">
+          <img src="/9483cc0d87acd41fcfef9912defca29f.jpg" alt="Pink Floral Nails">
+        </div>
+        <div class="carousel-item">
+          <img src="/b903f4ec48359c36a6f9dd10221a78a5.jpg" alt="Woman Selfie Mirror">
+        </div>
+        <div class="carousel-item">
+          <img src="/0ec9f720fe84fef0552ff931f4fe896f.jpg" alt="Soap Bubbles">
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-control" id="prevBtn">&#10094;</button>
+        <button class="carousel-control" id="nextBtn">&#10095;</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const carouselInner = document.getElementById('carouselInner');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const items = carouselInner.querySelectorAll('.carousel-item');
+      let currentIndex = 0;
+
+      function updateCarousel() {
+        carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % items.length;
+        updateCarousel();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateCarousel();
+      });
+
+      // Theme sync script
+      const body = document.body;
+      const savedTheme = localStorage.getItem('theme');
+      
+      function applyTheme(isLightTheme) {
+        if (isLightTheme) {
+          body.classList.add('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f0f0f0');
+        } else {
+          body.classList.remove('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1a1a1a');
+        }
+      }
+
+      // Apply theme on page load
+      if (savedTheme === 'light') {
+        applyTheme(true);
+      }
+
+      // Listen for theme changes from other pages
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'theme') {
+          const isLightTheme = event.newValue === 'light';
+          applyTheme(isLightTheme);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

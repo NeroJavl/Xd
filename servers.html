@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Generador de Usuarios - Video Downloader App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <button class="back-button" onclick="window.location.href='index.html'">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M20,11H7.83l5.59-5.59L12,4l-8,8l8,8l1.41-1.41L7.83,13H20V11z" fill="currentColor"/>
+      </svg>
+      Volver
+    </button>
+    
+    <div class="code-generator">
+      <h2 class="generator-title">Generador de Usuarios</h2>
+      <div class="generator-controls">
+        <div class="length-slider">
+          <label for="usernameLength">Longitud del nombre:</label>
+          <input type="range" id="usernameLength" min="4" max="12" value="6">
+          <span id="usernameLengthValue">6</span>
+        </div>
+        <div class="options">
+          <label>
+            <input type="checkbox" id="includeNumbersUsername" checked>
+            Incluir números
+          </label>
+        </div>
+        <button class="generate-btn" onclick="generateUsername()">Generar Usuario</button>
+      </div>
+      <div class="code-display">
+        <p id="generatedUsername" class="code-text"></p>
+        <button class="copy-btn" onclick="copyUsername()">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+          </svg>
+          Copiar
+        </button>
+      </div>
+    </div>
+
+    <div id="email-list" class="email-list">
+      <div class="email-item">
+        <img src="https://i.ibb.co/nbzXTqf/verificado.png" alt="Verified" width="16" height="16" style="margin-right: 8px;">
+        mika8hs82@icloud.com - Registrado
+      </div>
+      <div class="email-item">
+        <img src="https://i.ibb.co/nbzXTqf/verificado.png" alt="Verified" width="16" height="16" style="margin-right: 8px;">
+        john5js93@icloud.com - Registrado
+      </div>
+      <div class="email-item">
+        <img src="https://i.ibb.co/nbzXTqf/verificado.png" alt="Verified" width="16" height="16" style="margin-right: 8px;">
+        sara4kt75@icloud.com - Registrado
+      </div>
+    </div>
+  </div>
+  <script>
+    function generateUsername() {
+      const length = document.getElementById('usernameLength').value;
+      const includeNumbers = document.getElementById('includeNumbersUsername').checked;
+      
+      let chars = 'abcdefghijklmnopqrstuvwxyz';
+      if (includeNumbers) chars += '0123456789';
+      
+      let username = '';
+      for (let i = 0; i < length; i++) {
+        username += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      
+      username += '@icloud.com';
+      document.getElementById('generatedUsername').textContent = username;
+      
+      const emailList = document.getElementById('email-list');
+      if (emailList) {
+        const emailItem = document.createElement('div');
+        emailItem.className = 'email-item';
+        emailItem.innerHTML = `
+          <img src="https://i.ibb.co/nbzXTqf/verificado.png" alt="Verified" width="16" height="16" style="margin-right: 8px;">
+          ${username} - Registrado
+        `;
+        emailList.prepend(emailItem);
+        if (emailList.children.length > 3) {
+          emailList.removeChild(emailList.lastChild);
+        }
+      }
+    }
+
+    function copyUsername() {
+      const username = document.getElementById('generatedUsername').textContent;
+      navigator.clipboard.writeText(username);
+      alert('Usuario copiado al portapapeles');
+    }
+
+    document.getElementById('usernameLength').addEventListener('input', (e) => {
+      document.getElementById('usernameLengthValue').textContent = e.target.value;
+    });
+
+    // Theme sync script
+    document.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      const savedTheme = localStorage.getItem('theme');
+      
+      function applyTheme(isLightTheme) {
+        if (isLightTheme) {
+          body.classList.add('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f0f0f0');
+        } else {
+          body.classList.remove('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1a1a1a');
+        }
+      }
+
+      // Apply theme on page load
+      if (savedTheme === 'light') {
+        applyTheme(true);
+      }
+
+      // Listen for theme changes from other pages
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'theme') {
+          const isLightTheme = event.newValue === 'light';
+          applyTheme(isLightTheme);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

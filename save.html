@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Info - Video Downloader App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <button class="back-button" onclick="window.location.href='index.html'">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M20,11H7.83l5.59-5.59L12,4l-8,8l8,8l1.41-1.41L7.83,13H20V11z" fill="currentColor"/>
+      </svg>
+      Volver
+    </button>
+    
+    <div class="update-content">
+      <h1>Merry Christmas and Happy New Year!</h1>
+      <img src="https://i.ibb.co/nmDSzkf/bcc685f0df47e758cf17162f316660dc.jpg" alt="Christmas Image" style="width: 200px; height: auto; margin: 20px auto; display: block;">
+      <h2>Where the elves at?</h2>
+      <p>We are back once again with another cobalt update, whether you like it or not! Just like Santa, we come when you least expect us.</p>
+
+      <h3>We're back to the battlefield against Youtube's scraper flattener, but we're winning so far!</h3>
+      <p>We even managed to squeeze in a ton of improvements that range from performance bumps to UI overhauls to brand new features. Make sure to read further or you might end up on the naughty list...</p>
+
+      <h4>YouTube Improvements:</h4>
+      <ul>
+        <li>Countless infrastructure improvements and developments that allowed us to keep YouTube support available during the worst times</li>
+        <li>Improved YouTube codec fallback - now Cobalt goes through all codecs to find you the best one!</li>
+        <li>Improved YouTube video quality selection & fallback</li>
+      </ul>
+
+      <h4>Other Services:</h4>
+      <ul>
+        <li>Added support for Loom's video embed links</li>
+        <li>Added support for Facebook's mobile subdomain links</li>
+        <li>Fixed Instagram module issues with GraphQL API</li>
+        <li>Removed support for Vine due to 𝕏 breaking the archive</li>
+        <li>Improved Bluesky download performance and error messages</li>
+        <li>Rewrote VK video extraction module and added new link support</li>
+      </ul>
+
+      <h4>Web App & UI/UX Improvements:</h4>
+      <ul>
+        <li>Added instance access keys for private instances</li>
+        <li>Redesigned remux page for better understanding</li>
+        <li>Improved turnstile reliability and error messages</li>
+        <li>Added animations and improved toggle animation</li>
+        <li>Added RTL language support and sitemap</li>
+        <li>Improved accessibility and fixed various bugs</li>
+      </ul>
+
+      <h4>Processing Instance Improvements:</h4>
+      <ul>
+        <li>Added new YouTube authentication methods</li>
+        <li>Refactored cookie system and YouTube module</li>
+        <li>Fixed various bugs related to HLS videos and proxies</li>
+        <li>Improved metadata support and filename compatibility</li>
+      </ul>
+
+      <div class="footer-note">
+        <p>Thank you everyone for your support! Our GitHub repo reached over 20k stars and the web app has 150k daily visitors. This is our last big update of 2024 - we're already working on exciting new features for 2025!</p>
+        <p>~ Your jolly friends at imput </p>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Theme sync script
+    document.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      const savedTheme = localStorage.getItem('theme');
+      
+      function applyTheme(isLightTheme) {
+        if (isLightTheme) {
+          body.classList.add('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f0f0f0');
+        } else {
+          body.classList.remove('light-theme');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1a1a1a');
+        }
+      }
+
+      // Apply theme on page load
+      if (savedTheme === 'light') {
+        applyTheme(true);
+      }
+
+      // Listen for theme changes from other pages
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'theme') {
+          const isLightTheme = event.newValue === 'light';
+          applyTheme(isLightTheme);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

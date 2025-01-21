@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Configuraciones - Video Downloader App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <button class="back-button" onclick="window.location.href='index.html'">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M20,11H7.83l5.59-5.59L12,4l-8,8l8,8l1.41-1.41L7.83,13H20V11z" fill="currentColor"/>
+      </svg>
+      Volver
+    </button>
+    
+    <div class="config-section">
+      <h2>Configuraciones</h2>
+      
+      <div class="config-item">
+        <div class="config-header">
+          <span>Tema</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider"></span>
+        </label>
+        <div class="status-text" id="theme-status">Modo Oscuro</div>
+      </div>
+
+      <div class="config-item">
+        <div class="config-header">
+          <span>Música</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="music-toggle">
+          <span class="slider"></span>
+        </label>
+        <div class="status-text" id="music-status">Audio Desactivado</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeStatus = document.getElementById('theme-status');
+      const musicToggle = document.getElementById('music-toggle');
+      const musicStatus = document.getElementById('music-status');
+      const body = document.body;
+
+      // Theme toggle function
+      function toggleTheme(isLightTheme) {
+        if (isLightTheme) {
+          body.classList.add('light-theme');
+          themeStatus.textContent = 'Modo Claro';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f0f0f0');
+        } else {
+          body.classList.remove('light-theme');
+          themeStatus.textContent = 'Modo Oscuro';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1a1a1a');
+        }
+        localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+        window.dispatchEvent(new Event('theme-change'));
+      }
+
+      // Music toggle function
+      function toggleMusic(isMusicOn) {
+        musicStatus.textContent = isMusicOn ? 'Audio Activado' : 'Audio Desactivado';
+        localStorage.setItem('music', isMusicOn ? 'on' : 'off');
+        window.dispatchEvent(new Event('music-change'));
+      }
+
+      // Load saved preferences
+      const savedTheme = localStorage.getItem('theme') === 'light';
+      const savedMusic = localStorage.getItem('music') === 'on';
+
+      themeToggle.checked = savedTheme;
+      musicToggle.checked = savedMusic;
+
+      toggleTheme(savedTheme);
+      toggleMusic(savedMusic);
+
+      // Event listeners for toggle changes
+      themeToggle.addEventListener('change', () => {
+        toggleTheme(themeToggle.checked);
+      });
+
+      musicToggle.addEventListener('change', () => {
+        toggleMusic(musicToggle.checked);
+      });
+
+      // Listen for theme changes from other pages/windows
+      window.addEventListener('theme-change', () => {
+        const isLightTheme = localStorage.getItem('theme') === 'light';
+        themeToggle.checked = isLightTheme;
+        toggleTheme(isLightTheme);
+      });
+
+      window.addEventListener('music-change', () => {
+        const isMusicOn = localStorage.getItem('music') === 'on';
+        musicToggle.checked = isMusicOn;
+        toggleMusic(isMusicOn);
+      });
+    });
+  </script>
+</body>
+</html>
